@@ -1,0 +1,30 @@
+<template name="BlogLayout">
+  <body>
+  <div class="blog home-page">
+    <div class="blog-header">
+      <h1>Blog</h1>
+    </div>
+
+    <div class="add-blog">
+      <form class="blog-form" method="post">
+        <input type="text" name="title" placeholder="title"><br>
+        <textarea name="desc" rows="4" cols="30" placeholder="Description"></textarea><br>
+        <button type="submit" name="blog">ADD</button>
+      </form>
+    </div>
+
+    <div class="all-blog">
+      {{#each posts}}
+      <div class="blog-item">
+        <h3>{{title}}</h3>
+        <p>{{desc}}</p>
+        <h6>{{CreatedAt}}</h6>
+        <button class="edit-btn">edit</button>
+        <button class="delete-btn">delete</button>
+      </div>
+      {{/each}}
+    </div>
+
+  </div>
+  </body>
+</template>
