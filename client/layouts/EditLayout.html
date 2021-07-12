@@ -1,0 +1,17 @@
+<template name="EditLayout">
+  <body>
+    <div class="blog">
+    <div class="blog-header">
+      <h1>Edit-Blog</h1>
+    </div>
+    <div class="add-blog ">
+      <form class="blog-form edit-blog-form" method="post">
+        <input type="hidden" name="id" value={{id}} />
+        <input type="text" name="title" placeholder="title" value={{title}}><br>
+        <textarea name="desc" rows="4" cols="30" placeholder="Description" value={{desc}}></textarea><br>
+        <button type="submit" name="edit-blog">Save</button>
+      </form>
+    </div>
+    </div>
+  </body>
+</template>
