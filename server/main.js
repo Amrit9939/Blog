@@ -96,8 +96,20 @@ app.post("/edit-blog",(req,res)=>{
   }).run();
 });
 
+app.post("/blog",(req,res)=>{
+  Fiber(async function(){
+    try {
+      var blog = await Post.findOne({blogid:req.body.id});
+      res.status(200).json({message:blog});
+    } catch (err) {
+      res.status(500).json({message:err});
+    }
+  }).run();
+})
+
 WebApp.connectHandlers.use(app);
 
 Meteor.publish('getPosts',()=>{
   return Post.find({});
+
 })

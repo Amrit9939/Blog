@@ -1,0 +1,21 @@
+<template name="CreateLayout">
+  <head>
+    <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.quilljs.com/1.3.7/quill.js"></script>
+  </head>
+  <body>
+    <div class="blog">
+    <div class="blog-header">
+      <h1>Create-Blog</h1>
+    </div>
+    <div class="add-blog ">
+      <form class="blog-form" method="post">
+        <input type="text" name="title" placeholder="title"><br>
+        <div id="toolbar"></div>
+        <div id="editor" name="edit" value="this is"></div><br>
+        <button type="submit" name="blog">ADD</button>
+      </form>
+    </div>
+    </div>
+  </body>
+</template>

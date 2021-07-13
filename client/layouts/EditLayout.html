@@ -1,4 +1,8 @@
 <template name="EditLayout">
+  <head>
+    <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.quilljs.com/1.3.7/quill.js"></script>
+  </head>
   <body>
     <div class="blog">
     <div class="blog-header">
@@ -8,10 +12,15 @@
       <form class="blog-form edit-blog-form" method="post">
         <input type="hidden" name="id" value={{id}} />
         <input type="text" name="title" placeholder="title" value={{title}}><br>
-        <textarea name="desc" rows="4" cols="30" placeholder="Description" value={{desc}}></textarea><br>
+        <div id="toolbar"></div>
+        <div id="editor1" name="edit" value="this is"></div><br><br>
         <button type="submit" name="edit-blog">Save</button>
       </form>
     </div>
     </div>
   </body>
 </template>
+
+<!-- "scripts": {
+  "start": "./run.bat"
+} -->
