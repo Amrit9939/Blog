@@ -44,7 +44,11 @@ logging@1.2.0
 meteor@1.9.3
 meteor-base@1.4.0
 minifier-css@1.5.4
+<<<<<<< HEAD
 minifier-js@2.6.1
+=======
+minifier-js@2.6.0
+>>>>>>> 06c25418d267e0093922cb7d6bdeb8a201ff32e0
 minimongo@1.6.2
 mobile-experience@1.1.0
 mobile-status-bar@1.1.0
@@ -57,7 +61,11 @@ mongo-decimal@0.1.2
 mongo-dev-server@1.1.0
 mongo-id@1.0.8
 npm-mongo@3.9.0
+<<<<<<< HEAD
 observe-sequence@1.0.19
+=======
+observe-sequence@1.0.18
+>>>>>>> 06c25418d267e0093922cb7d6bdeb8a201ff32e0
 ordered-dict@1.1.0
 ostrio:flow-router-extra@3.7.5
 ostrio:flow-router-title@3.2.1

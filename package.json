@@ -1,11 +1,21 @@
 {
   "name": "blog",
   "private": true,
+<<<<<<< HEAD
+=======
+  "scripts": {
+    "start": "meteor run",
+    "test": "meteor test --once --driver-package meteortesting:mocha",
+    "test-app": "TEST_WATCH=1 meteor test --full-app --driver-package meteortesting:mocha",
+    "visualize": "meteor --production --extra-packages bundle-visualizer"
+  },
+>>>>>>> 06c25418d267e0093922cb7d6bdeb8a201ff32e0
   "dependencies": {
     "@babel/runtime": "^7.11.2",
     "axios": "^0.21.1",
     "bcrypt": "^5.0.1",
     "express": "^4.17.1",
+<<<<<<< HEAD
     "html-loader": "^2.1.2",
     "jquery": "^3.5.1",
     "md5": "^2.3.0",
@@ -16,4 +26,10 @@
     "start": "./run.bat"
   }
 
+=======
+    "jquery": "^3.5.1",
+    "md5": "^2.3.0",
+    "meteor-node-stubs": "^1.0.1"
+  }
+>>>>>>> 06c25418d267e0093922cb7d6bdeb8a201ff32e0
 }

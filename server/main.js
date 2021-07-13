@@ -96,6 +96,7 @@ app.post("/edit-blog",(req,res)=>{
   }).run();
 });
 
+<<<<<<< HEAD
 app.post("/blog",(req,res)=>{
   Fiber(async function(){
     try {
@@ -107,9 +108,14 @@ app.post("/blog",(req,res)=>{
   }).run();
 })
 
+=======
+>>>>>>> 06c25418d267e0093922cb7d6bdeb8a201ff32e0
 WebApp.connectHandlers.use(app);
 
 Meteor.publish('getPosts',()=>{
   return Post.find({});
+<<<<<<< HEAD
 
+=======
+>>>>>>> 06c25418d267e0093922cb7d6bdeb8a201ff32e0
 })
