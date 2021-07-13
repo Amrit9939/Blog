@@ -2,6 +2,7 @@ import {Meteor} from 'meteor/meteor';
 const Blog = new Mongo.Collection(null);
 import {Post} from "../../collections/collection.js";
 import axios from 'axios';
+import { Session } from 'meteor/session'
 // import Quill from 'quill/core';
 // import Toolbar from 'quill/modules/toolbar';
 // import Snow from 'quill/themes/snow';
@@ -87,6 +88,7 @@ Template.SigninLayout.events({
           else if (res.data.message=="invalid cridintials") {
             alert("invalid cridintials");
           }else {
+            Session.setPersistent("token",6);
             FlowRouter.go("/blog");
           }
       }).catch(err=>{
