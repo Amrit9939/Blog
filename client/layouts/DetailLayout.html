@@ -1,12 +1,15 @@
 <template name="DetailLayout">
   <body>
     <div class="blog-view">
-      <div class="blog-item1">
-        {{#each blog}}
-        {{{desc}}}
-        {{/each}}
+        <div >
+          {{#each blog}}
+          <p>{{title}}</p>
+          <img src="http://localhost:3000/{{key}}" alt="" class="blog-img" width="100" height="100">
+          <p>{{{desc}}}</p>
+          {{/each}}
+        </div>
       </div>
-    </div>
+      <!-- <img src="image/9c9b7e892fd26e7ddfcb3ac04d10cf96" alt="" class="blog-image"> -->
     <div class="back1">
         <button class="back">Back</button>
     </div>

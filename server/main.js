@@ -1,10 +1,14 @@
 import { Meteor } from 'meteor/meteor';
+import multer from "multer";
 import express from 'express';
 import {WebApp} from 'meteor/webapp';
 import md5 from 'md5';
 import bcrypt from 'bcrypt';
+const upload = multer({ dest: 'uploads/' });
 const Fiber = require('fibers');
 import {User,Post} from '../collections/collection.js';
+
+const {uploadFile,getFile} = require("./s3");
 
 const app = express();
 app.use(express.json());
@@ -46,12 +50,13 @@ app.post('/signin',(req,res)=>{
       const user = await User.findOne({email:email});
       if(user){
         if(user.password==password){
-          res.status(200).json({message:'signin succes'});
+          res.status(200).send(user);
+
         }else {
           res.status(200).json({message:'invalid cridintials'});
         }
       }else {
-        res.status(200).json({message:"invalid cridintials"});
+        res.status(200).json({message:"user not exists"});
       }
     } catch (err) {
       res.status(404).json({message:err.message});
@@ -59,13 +64,17 @@ app.post('/signin',(req,res)=>{
   }).run();
 });
 
-app.post("/post",(req,res)=>{
+app.post("/post",upload.single('image'),(req,res)=>{
   console.log("in /post");
+  console.log(req.file);
   Fiber(async function(){
     try {
-      await Post.insert({title:req.body.title,desc:req.body.desc,CreatedAt:req.body.CreatedAt,blogid:req.body.blogid});
+      const result = await uploadFile(req.file);
+      console.log(result.key);
+      await Post.insert({title:req.body.title,desc:req.body.desc,CreatedAt:req.body.CreatedAt,blogid:req.body.blogid,key:"image/"+result.key});
       res.status(200).json({message:"post inserted"});
     } catch (err) {
+      console.log(err);
       res.status(400).json({message:err});
     }
   }).run();
@@ -96,26 +105,34 @@ app.post("/edit-blog",(req,res)=>{
   }).run();
 });
 
-<<<<<<< HEAD
+
 app.post("/blog",(req,res)=>{
   Fiber(async function(){
     try {
       var blog = await Post.findOne({blogid:req.body.id});
-      res.status(200).json({message:blog});
+      res.status(200).send(blog);
     } catch (err) {
       res.status(500).json({message:err});
     }
   }).run();
+});
+
+app.get("/image/:key",(req,res)=>{
+  Fiber(async function(){
+    try {
+      const key = req.params.key
+      const readStream = await getFile(key)
+      console.log(readStream);
+      readStream.pipe(res);
+    } catch (err) {
+      console.log(err);
+    }
+  }).run()
 })
 
-=======
->>>>>>> 06c25418d267e0093922cb7d6bdeb8a201ff32e0
 WebApp.connectHandlers.use(app);
 
 Meteor.publish('getPosts',()=>{
   return Post.find({});
-<<<<<<< HEAD
 
-=======
->>>>>>> 06c25418d267e0093922cb7d6bdeb8a201ff32e0
 })

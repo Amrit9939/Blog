@@ -1,20 +1,24 @@
-<<<<<<< HEAD
+
 <template name="BlogLayout">
+  <head>
+    <link  href="/path/to/cropper.css" rel="stylesheet">
+  </head>
 
   <body>
   <div class="blog home-page">
     <div class="blog-header">
       <h1>Blog</h1>
+      <button  class="logout">Logout</button>
     </div>
 
     <div class="add-blog">
       <button class="create-btn">Create</button>
     </div>
-
     <div class="all-blog">
       {{#each posts}}
       <div class="blog-item">
         <h3>{{title}}</h3>
+        <img src="{{key}}" alt="" class="blog-image">
         <p>{{{desc}}}</p>
         <h6>{{CreatedAt}}</h6>
         <button class="edit-btn">edit</button>
@@ -23,39 +27,8 @@
       </div>
       {{/each}}
     </div>
-
+    <div>
+</div>
   </div>
   </body>
 </template>
-=======
-<template name="BlogLayout">
-  <body>
-  <div class="blog home-page">
-    <div class="blog-header">
-      <h1>Blog</h1>
-    </div>
-
-    <div class="add-blog">
-      <form class="blog-form" method="post">
-        <input type="text" name="title" placeholder="title"><br>
-        <textarea name="desc" rows="4" cols="30" placeholder="Description"></textarea><br>
-        <button type="submit" name="blog">ADD</button>
-      </form>
-    </div>
-
-    <div class="all-blog">
-      {{#each posts}}
-      <div class="blog-item">
-        <h3>{{title}}</h3>
-        <p>{{desc}}</p>
-        <h6>{{CreatedAt}}</h6>
-        <button class="edit-btn">edit</button>
-        <button class="delete-btn">delete</button>
-      </div>
-      {{/each}}
-    </div>
-
-  </div>
-  </body>
-</template>
->>>>>>> 06c25418d267e0093922cb7d6bdeb8a201ff32e0

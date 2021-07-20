@@ -1,6 +1,9 @@
 <template name="CreateLayout">
   <head>
+    <link  href="/path/to/cropper.css" rel="stylesheet">
     <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css" crossorigin="anonymous" />
+
     <script src="https://cdn.quilljs.com/1.3.7/quill.js"></script>
   </head>
   <body>
@@ -9,13 +12,31 @@
       <h1>Create-Blog</h1>
     </div>
     <div class="add-blog ">
-      <form class="blog-form" method="post">
+      <form class="blog-form" enctype="multipart/form-data" method="post">
         <input type="text" name="title" placeholder="title"><br>
         <div id="toolbar"></div>
         <div id="editor" name="edit" value="this is"></div><br>
+        <input type="file" name="image" id="fileInput">
         <button type="submit" name="blog">ADD</button>
       </form>
     </div>
+
+    <!-- <canvas id="testCanvas" width="600" height="450">
+     Your browser does not support canvas.
+    </canvas> -->
+    <div class="image-div">
+      <img src="" alt="img" id="image">
     </div>
+    <div class="preview"></div>
+
+    </div>
+
+    <div>
+  <canvas id="canvas1">
+    Your browser does not support the HTML5 canvas element.
+  </canvas>
+</div>
+
+
   </body>
 </template>
