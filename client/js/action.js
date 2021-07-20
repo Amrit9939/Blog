@@ -13,6 +13,7 @@ import Cropper from 'cropperjs';
 console.log("yes");
 var x = null;
 var text = "";
+var cropper;
 
 Template.HomeLayout.events({
   'click #signup': function(event){
@@ -144,10 +145,7 @@ Template.CreateLayout.events({
     document.getElementById("image").src = reader.result;
 
     const image = document.getElementById('image');
-
-    var img = new Image();
-
-    var cropper = new Cropper(image, {
+    cropper = new Cropper(image, {
     aspectRatio: 16 / 9,
     crop(event) {
     console.log(event.detail.x);
@@ -157,14 +155,8 @@ Template.CreateLayout.events({
     console.log(event.detail.rotate);
     console.log(event.detail.scaleX);
     console.log(event.detail.scaleY);
-
-    canvas = cropper.getCroppedCanvas();
-    },
-    preview: '.preview'
+    }
     });
-
-   console.log(canvas);
-
     }
     // const cropper =new Cropper(document.getElementById('image'), {
     //   aspectRatio: 1,
@@ -180,16 +172,22 @@ Template.CreateLayout.events({
 
   'submit .blog-form': function(event){
     event.preventDefault();
-
-
     var form_data = new FormData();
+    const selectedFile = document.getElementById('fileInput').files[0];
+    cropper.getCroppedCanvas().toBlob((blob)=>{
+      console.log(blob);
+      var file1 = new File([blob], selectedFile.name);
+      console.log(file1);
+      form_data.append("image",file1);
+
+
     const title= event.target.title.value;
     const desc = $(".ql-editor").html();
-    const selectedFile = document.getElementById('fileInput').files[0];
+
     console.log(document.getElementById("image").src);
     form_data.append("title",event.target.title.value);
     form_data.append("desc",desc);
-    form_data.append("image",selectedFile);
+
     form_data.append("CreatedAt",new Date());
     form_data.append("blogid", 'blog'+ Date.now());
     console.log(form_data);
@@ -212,7 +210,7 @@ Template.CreateLayout.events({
         console.log(err);
       })
     }
-  },
+});  },
   'click .quill1': function(){
     var r = $(".ql-editor").html();
     console.log(r);
