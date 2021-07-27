@@ -1,16 +1,23 @@
+const fs = require('fs');
 
 import {Meteor} from 'meteor/meteor';
 const Blog = new Mongo.Collection(null);
 import {Post} from "../../collections/collection.js";
 import axios from 'axios';
-import { Session } from 'meteor/session'
-
+import { Session } from 'meteor/session';
+import path from 'path';
 import'cropperjs/dist/cropper.css';
+var natural = require('natural');
 
 import Cropper from 'cropperjs';
 
+// const upload = require('express-fileupload');
 
-console.log("yes");
+const ffmpeg = require('ffmpeg')
+
+console.log(natural.JaroWinklerDistance("dixon","dicksonx"));
+console.log(natural.JaroWinklerDistance('not', 'same'));
+
 var x = null;
 var text = "";
 var cropper;
@@ -83,8 +90,11 @@ Template.SigninLayout.events({
           }else {
             const result = res.data;
             console.log(result);
-            Session.setPersistent({"userid":result._id});
-            setTimeout(myFunction, 60*60*1000);
+            Session.setPersistent({"userid":result.id,"token":result.token});
+            setTimeout (()=>{
+              Session.clear();
+              FlowRouter.go("/signin");
+            },3600 *1000);
             function myFunction(){
               localStorage.removeItem("__amplify__userid");
               FlowRouter.go("/signin");
@@ -170,17 +180,29 @@ Template.CreateLayout.events({
 
   },
 
+  'change #video':function(){
+    var new_file = document.getElementById("video").files[0];
+    // console.log(file);
+    const form_data = new FormData();
+    form_data.append("file",new_file);
+    for (var key of form_data.entries()) {
+        console.log(key[0] + ', ' + key[1]);
+    }
+    axios.post('/video',form_data,{headers:{'Content-Type': 'multipart/form-data'}}).then((res)=>{
+      console.log(res);
+    }).catch(err=>{
+      console.log(err);
+    });
+  },
+
   'submit .blog-form': function(event){
     event.preventDefault();
     var form_data = new FormData();
     const selectedFile = document.getElementById('fileInput').files[0];
     cropper.getCroppedCanvas().toBlob((blob)=>{
-      console.log(blob);
       var file1 = new File([blob], selectedFile.name);
       console.log(file1);
-      form_data.append("image",file1);
-
-
+    form_data.append("image",file1);
     const title= event.target.title.value;
     const desc = $(".ql-editor").html();
 
@@ -195,7 +217,6 @@ Template.CreateLayout.events({
       alert("please fill all");
     }
     else{
-      console.log(selectedFile);
       var obj = {
         title:title,
         desc:desc,

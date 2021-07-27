@@ -1,3 +1,4 @@
+const fs = require('fs');
 import { Meteor } from 'meteor/meteor';
 import multer from "multer";
 import express from 'express';
@@ -7,15 +8,25 @@ import bcrypt from 'bcrypt';
 const upload = multer({ dest: 'uploads/' });
 const Fiber = require('fibers');
 import {User,Post} from '../collections/collection.js';
+const uploadfile = require("express-fileupload");
+const jwt = require('jsonwebtoken');
 
-const {uploadFile,getFile} = require("./s3");
+var ffmpeg = require('ffmpeg');
+const {uploadFile,getFile,uploadFile1} = require("./s3");
+
+const signup = require("./routes/signup");
 
 const app = express();
 app.use(express.json());
+app.use(uploadfile());
+app.use("/signup1",signup);
 // Meteor.startup(() => {
 //   // code to run on server at startup
 // });
 console.log("yes");
+
+
+
 
 app.post('/signup',(req,res)=>{
   Fiber(async function(){
@@ -50,7 +61,22 @@ app.post('/signin',(req,res)=>{
       const user = await User.findOne({email:email});
       if(user){
         if(user.password==password){
-          res.status(200).send(user);
+          const payload = {
+      id: user._id,
+    };
+
+    var token = await jwt.sign(payload, 'amritbdjd', { expiresIn: 3600 * 1000 });
+if (!token) {
+      console.log(err);
+    } else {
+      return res.json({
+        id: user._id,
+        message: 'Welcome back!',
+        code: 200,
+        token: token,
+      });
+    }
+
 
         }else {
           res.status(200).json({message:'invalid cridintials'});
@@ -64,12 +90,14 @@ app.post('/signin',(req,res)=>{
   }).run();
 });
 
+
 app.post("/post",upload.single('image'),(req,res)=>{
   console.log("in /post");
-  console.log(req.file);
+  var file = req.file;
+  // console.log(req);
   Fiber(async function(){
     try {
-      const result = await uploadFile(req.file);
+      const result = await uploadFile(file);
       console.log(result.key);
       await Post.insert({title:req.body.title,desc:req.body.desc,CreatedAt:req.body.CreatedAt,blogid:req.body.blogid,key:"image/"+result.key});
       res.status(200).json({message:"post inserted"});
@@ -79,6 +107,49 @@ app.post("/post",upload.single('image'),(req,res)=>{
     }
   }).run();
 });
+
+app.post("/video",(req,res)=>{
+  console.log("in video");
+  var file = req.files.file;
+
+  file.mv("tmp/" + file.name, function (err) {
+       if (err) {
+           console.log(err);
+       }
+     else {
+         console.log("succes");
+         try {
+         var process = new ffmpeg('tmp/'+file.name);
+         process.then( function (video) {
+           console.log('The video is ready to be processed');
+           var newfilename='temp'+Date.now()+'.mp4';
+           video.fnExtractSoundToMP3("tmp/"+newfilename);
+           video.setDisableAudio();
+
+           video.setVideoSize("50%", true,true, "")
+           video.save("tmp/"+newfilename,async function(err,file){
+             if(err){
+               console.log("error");
+               console.log(err);
+             }else {
+               const result = await uploadFile1(file);
+               console.log("in result");
+               console.log(result);
+             }
+           })
+           // const fileStream = fs.createReadStream("tmp/"+newfilename);
+           // console.log(fileStream);
+         }, function (err) {
+           console.log('Error: ' + err);
+         });
+         } catch (e) {
+         console.log(e);
+         console.log(e);
+         }
+     }
+});
+
+})
 
 app.post("/delete-blog",(req,res)=>{
   console.log("in delete");
@@ -122,7 +193,7 @@ app.get("/image/:key",(req,res)=>{
     try {
       const key = req.params.key
       const readStream = await getFile(key)
-      console.log(readStream);
+      // console.log(readStream);
       readStream.pipe(res);
     } catch (err) {
       console.log(err);
